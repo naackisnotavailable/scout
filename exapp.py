@@ -5,11 +5,26 @@ import statbotics
 from datetime import datetime
 import json
 import webbrowser
+import sheets
+
+sData = sheets.main()
+print(sData)
+
 
 encode = json.JSONEncoder()
 decode = json.JSONDecoder()
 
 sb = statbotics.Statbotics()
+
+
+
+
+
+
+def sDataDisp(*args):
+    print(sData['5530'])
+    foo = sData[tn.get()]
+    gsheet.set("GSheet Average Total Points: " + str(foo))
 
 def callback(url):
    webbrowser.open_new_tab(url)
@@ -28,6 +43,7 @@ def matchChance(*args):
     print('mtch\n' + str(matches))
     for x in matches:
         if x['match_number'] == int(mN.get()):
+            video = x['video']
             red_epa.set(x['red_epa_sum'])
             blue_epa.set(x['blue_epa_sum'])
             r1.set(x['red_1'])
@@ -46,6 +62,11 @@ def matchChance(*args):
             b2.set("Blue Team 2: " + b2.get())
             b3.set("Blue Team 3: " + b3.get())
 
+            ewin = x['epa_winner']
+            eprob = x['epa_win_prob']
+
+            winprob.set("Winner: " + str(ewin) + " " + str(eprob))
+
             ttk.Label(mainframe, textvariable=red_epa).grid(column=2, row=3, sticky=(W, E))
             ttk.Label(mainframe, textvariable=blue_epa).grid(column=2, row=4, sticky=(W, E))
 
@@ -60,6 +81,14 @@ def matchChance(*args):
             ttk.Label(mainframe, textvariable=b1).grid(column=2, row=10, sticky=(W, E))
             ttk.Label(mainframe, textvariable=b2).grid(column=2, row=11, sticky=(W, E))
             ttk.Label(mainframe, textvariable=b3).grid(column=2, row=12, sticky=(W, E))
+
+            ttk.Label(mainframe, textvariable=blank_spot).grid(column=2, row=13, sticky=(W, E))
+
+            ttk.Label(mainframe, textvariable=winprob).grid(column=2, row=14, sticky=(W, E))
+
+            link = Label(root, text="Match Video",font=('Helveticabold', 10), fg="blue", cursor="hand2")
+            link.grid(column=2, row=15, sticky=(W, E))
+            link.bind("<Button-1>", lambda e: callback(f'https://www.youtube.com/watch?v={video}'))
             
             mC = True
 
@@ -117,6 +146,7 @@ def teamInfo(tNum, rank=False):
         rec = "Record: " + str(x['wins']) + ' - ' +  str(x['losses']) + ' - ' + str(x['ties'])
         return (r, rec, eA, eM, rpa, rp)
 def find(*args):
+    sDataDisp()
     mC = False
     try:
         value = int(tn.get())
@@ -218,6 +248,8 @@ r3 = StringVar()
 b1 = StringVar()
 b2 = StringVar()
 b3 = StringVar()
+winprob = StringVar()
+gsheet = StringVar()
 
 blank_spot = StringVar()
 blank_spot.set(" ")
@@ -226,12 +258,12 @@ with open('event_id.txt', 'r') as eid:
     eidc = eid.read()
 
 
-ttk.Button(mainframe, text="Find", command=find).grid(column=3, row=13, sticky=W)
-ttk.Button(mainframe, text="Update data", command=update).grid(column=4, row=13, sticky=W)
-ttk.Button(mainframe, text="Offline Find", command=offlineFind).grid(column=5, row=13, sticky=W)
+ttk.Button(mainframe, text="Find", command=find).grid(column=3, row=16, sticky=W)
+ttk.Button(mainframe, text="Update data", command=update).grid(column=4, row=16, sticky=W)
+ttk.Button(mainframe, text="Offline Find", command=offlineFind).grid(column=5, row=16, sticky=W)
 
-ttk.Button(mainframe, text="Update Event ID", command=eidup).grid(column=10, row=13, sticky=W)
-ttk.Button(mainframe, text="Get Match", command=matchChance).grid(column=12, row=13, sticky=W)
+ttk.Button(mainframe, text="Update Event ID", command=eidup).grid(column=10, row=16, sticky=W)
+ttk.Button(mainframe, text="Get Match", command=matchChance).grid(column=12, row=16, sticky=W)
 
 ttk.Label(mainframe, textvariable=date).grid(column=4, row=4, sticky=(W, E))
 ttk.Label(mainframe, textvariable=rank1).grid(column=4, row=4, sticky=(W, E))
@@ -239,6 +271,7 @@ ttk.Label(mainframe, textvariable=rp1).grid(column=4, row=5, sticky=(W, E))
 ttk.Label(mainframe, textvariable=rpa1).grid(column=4, row=6, sticky=(W, E))
 ttk.Label(mainframe, textvariable=epaT1).grid(column=4, row=7, sticky=(W, E))
 ttk.Label(mainframe, textvariable=epaA1).grid(column=4, row=8, sticky=(W, E))
+ttk.Label(mainframe, textvariable=gsheet).grid(column=4, row=9, sticky=(W, E))
 
 
 

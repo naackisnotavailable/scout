@@ -13,8 +13,8 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 
 # The ID and range of a sample spreadsheet.
 SAMPLE_SPREADSHEET_ID = '1S-Ud5ZyEISe7PUpwZONEVWFGoDKORw0s-KdWy89FK2s'
-SAMPLE_RANGE_NAME = 'A3:E'
-
+SAMPLE_RANGE_NAME = 'A3:P'
+retArr = {}
 
 def main():
     """Shows basic usage of the Sheets API.
@@ -46,15 +46,16 @@ def main():
         result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
                                     range=SAMPLE_RANGE_NAME).execute()
         values = result.get('values', [])
-        print(values)
 
         if not values:
             print('No data found.')
-            return
+            return False
 
         for row in values:
             # Print columns A and E, which correspond to indices 0 and 4.
-            print('%s, %s' % (row[0], row[4]))
+            #retArr.append('%s, %s' % (row[0], row[4]))
+            retArr[row[0]] = row[15]
+        return retArr
     except HttpError as err:
         print(err)
 
