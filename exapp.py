@@ -22,9 +22,13 @@ sb = statbotics.Statbotics()
 
 
 def sDataDisp(*args):
-    print(sData['5530'])
-    foo = sData[tn.get()]
-    gsheet.set("GSheet Average Total Points: " + str(foo))
+    try:
+
+        print(sData['5530'])
+        foo = sData[tn.get()]
+        gsheet.set("GSheet Average Total Points: " + str(foo))
+    except KeyError as e:
+        pass
 
 def callback(url):
    webbrowser.open_new_tab(url)
@@ -87,7 +91,7 @@ def matchChance(*args):
             ttk.Label(mainframe, textvariable=winprob).grid(column=2, row=14, sticky=(W, E))
 
             link = Label(root, text="Match Video",font=('Helveticabold', 10), fg="blue", cursor="hand2")
-            link.grid(column=2, row=15, sticky=(W, E))
+            link.grid(column=3, row=9, sticky=(W, E))
             link.bind("<Button-1>", lambda e: callback(f'https://www.youtube.com/watch?v={video}'))
             
             mC = True
@@ -103,7 +107,10 @@ def eidup(*args):
 def offlineFind():
     mC = False
     with open('offlinesync.json', 'r') as teaminfo:
-        x = json.load(teaminfo)
+        try:
+            x = json.load(teaminfo)
+        except Exception as e:
+            pass
         print(x)
         try:
             x = x[tn.get()]
@@ -193,7 +200,7 @@ def find(*args):
         foo = StringVar()
         foo.set("")
         ttk.Label(mainframe, textvariable=foo).grid(column=4, row=10, sticky=(W, E))
-        link = Label(root, text="Website",font=('Helveticabold', 5), fg="blue", cursor="hand2")
+        link = Label(root, text="Website",font=('Helveticabold', 10), fg="blue", cursor="hand2")
         link.grid(column=4, row=9, sticky=(W, E))
         link.bind("<Button-1>", lambda e: callback(a))
         
@@ -292,32 +299,3 @@ defg.grid(column=10, row=10, sticky=(W, E))
 
 
 root.mainloop()
-
-#root = Tk()
-#root.title("Feet to Meters")
-#
-#mainframe = ttk.Frame(root, padding="3 3 12 12")
-#mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
-#root.columnconfigure(0, weight=1)
-#root.rowconfigure(0, weight=1)
-#
-#feet = StringVar()
-#feet_entry = ttk.Entry(mainframe, width=7, textvariable=feet)
-#feet_entry.grid(column=2, row=1, sticky=(W, E))
-#
-#meters = StringVar()
-#ttk.Label(mainframe, textvariable=meters).grid(column=2, row=2, sticky=(W, E))
-#
-#ttk.Button(mainframe, text="Find", command=calculate).grid(column=3, row=3, sticky=W)
-#
-#ttk.Label(mainframe, text="feet").grid(column=3, row=1, sticky=W)
-#ttk.Label(mainframe, text="is equivalent to").grid(column=1, row=2, sticky=E)
-#ttk.Label(mainframe, text="meters").grid(column=3, row=2, sticky=W)
-#
-#for child in mainframe.winfo_children(): 
-#    child.grid_configure(padx=5, pady=5)
-#
-#feet_entry.focus()
-#root.bind("<Return>", calculate)
-#
-#root.mainloop()
