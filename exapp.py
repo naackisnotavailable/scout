@@ -21,6 +21,12 @@ sb = statbotics.Statbotics()
 
 
 
+
+
+
+def picker(*args, **kwargs):
+    ttk.Label(mainframe, textvariable=r1).grid(column=2, row=6, sticky=(W, E))
+
 def sDataDisp(*args):
     try:
 
@@ -296,6 +302,5 @@ print('mn\n' + mN.get())
 
 defg = ttk.Entry(mainframe, width=7, textvariable=idup)
 defg.grid(column=10, row=10, sticky=(W, E))
-
 
 root.mainloop()
